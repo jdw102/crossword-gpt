@@ -1,0 +1,62 @@
+{
+    "across": [
+      {
+        "hint": "Sweet, juicy fruit with a tough outer skin and a large pit in the center",
+        "id": 1,
+        "name": "MANGO",
+        "x": 25,
+        "y": 25
+      },
+      {
+        "hint": "Small, sweet fruit that grows on a bush with thorns",
+        "id": 2,
+        "name": "RASPBERRY",
+        "x": 23,
+        "y": 23
+      },
+      {
+        "hint": "Large, brown fruit with a hard shell containing white flesh and water",
+        "id": 3,
+        "name": "COCONUT",
+        "x": 19,
+        "y": 28
+      },
+      {
+        "hint": "Small, sweet fruit with seeds on the surface and a green stem",
+        "id": 4,
+        "name": "STRAWBERRY",
+        "x": 22,
+        "y": 21
+      },
+      {
+        "hint": "Soft, orange fruit with black seeds in the center",
+        "id": 5,
+        "name": "PAPAYA",
+        "x": 20,
+        "y": 17
+      }
+    ],
+    "down": [
+      {
+        "hint": "Sweet, juicy fruit with a thin skin and soft flesh",
+        "id": 1,
+        "name": "PEAR",
+        "x": 26,
+        "y": 23
+      },
+      {
+        "hint": "Juicy, red fruit with green skin and black seeds in the center",
+        "id": 2,
+        "name": "WATERMELON",
+        "x": 23,
+        "y": 19
+      },
+      {
+        "hint": "Sweet, yellow fruit that grows in bunches",
+        "id": 3,
+        "name": "BANANA",
+        "x": 25,
+        "y": 16
+      }
+    ]
+  }
