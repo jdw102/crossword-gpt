@@ -1,6 +1,10 @@
 import random
 from enum import Enum
 import csv
+import openai
+import json
+
+openai.api_key = "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"
 
 class Dir(Enum):
     HORIZONTAL = 1
@@ -10,9 +14,14 @@ class Dir(Enum):
 def generate_cross(words, max_words, x_size, y_size):
     random.shuffle(words)
     word = words.pop()
+    count = 1
+    across_index = 2
+    down_index = 1
+    across_map = {}
+    down_map = {}
     crossword = [[' ' for _ in range(x_size)] for _ in range(y_size)]
     crossword = place(word, crossword, int(x_size / 2), int(y_size / 2), Dir.HORIZONTAL)
-    count = 1
+    across_map[1] = (word, int(x_size / 2), int(y_size / 2))
     while count < max_words and len(words) > 0:
         word = words.pop()
         placements = []
@@ -23,19 +32,35 @@ def generate_cross(words, max_words, x_size, y_size):
                         placements.extend(find_placement(word, crossword, x, y))
         max_score = 0
         best_board = crossword
+        best_placement = None
         for placement in placements:
-            if placement is None:
-                continue
             new_board = place(word, crossword.copy(), placement[0], placement[1], placement[2])
             new_score = generate_score(new_board)
             if new_score > max_score:
                 max_score = new_score
                 best_board = new_board
+                best_placement = placement
         if max_score > 0:
             crossword = best_board
             count = count + 1
-    return crossword
+            if best_placement is not None:
+                if best_placement[2] == Dir.HORIZONTAL:
+                    across_map[across_index] = (word, best_placement[0], best_placement[1])
+                    across_index += 1
+                else:
+                    down_map[down_index] = (word, best_placement[0], best_placement[1])
+                    down_index += 1
+    add_numbers(crossword, across_map, down_map)
+    return crossword, across_map, down_map
 
+
+def add_numbers(crossword, across_map, down_map):
+    for key in across_map:
+        word, x, y = across_map[key]
+        crossword[y][x] = word[0] + str(key)
+    for key in down_map:
+        word, x, y = down_map[key]
+        crossword[y][x] = word[0] + str(key)
 
 def generate_score(board):
     size_ratio = max(float(len(board)) / len(board[0]), float(len(board[0])) / len(board))
@@ -127,29 +152,76 @@ def minimize_crossword_area(puzzle):
     reduced_puzzle = []
     for row in range(min_row, max_row + 1):
         reduced_puzzle.append(puzzle[row][min_col:max_col + 1])
-
     return reduced_puzzle
 
 
 def export_cross(crossword):
     finished = minimize_crossword_area(crossword)
-    with open('crossword.csv', 'w') as f:
+    with open('crossword.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         for line in finished:
             writer.writerow(line)
 
-test = ["puffed", "pealed", "ballet", "game", "greeds", "kills", "simplify", "shop", "fig", "paws"]
-word_list = [
-    "python",
-    "code",
-    "algorithm",
-    "variable",
-    "list",
-    "loop",
-    "function",
-    "string",
-    "dictionary",
-    "module"
-]
-export_cross(generate_cross(word_list, 20, 30, 30))
 
+openai.api_key = "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"
+messages = [
+    {"role": "system", "content": "You are an assistant."}
+]
+prompt = "Generate in JSON format a list of 10 words to be used in a crossword puzzle and a hint to go along with each of them. Do not generate any other text beside the JSON including your initial response such as when you say \"Sure!\". Do not say anything except generate the JSON! Make sure there are enough letters in common between some of the words and that they are in all caps. Make sure the JSON is formatted as {\"words\": [{\"word\": ___, \"hint\":___}]}. The words should abide by the following theme: "
+
+
+def gpt_call(theme):
+    messages.append(
+        {"role": "user", "content": prompt + theme},
+    )
+    chat = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo", messages=messages
+    )
+    reply = chat.choices[0].message.content
+    messages.append({"role": "assistant", "content": reply})
+    data = json.loads(reply)
+    hint_map = {}
+    for pair in data["words"]:
+        hint_map[pair['word']] = pair['hint']
+    words = parse_map(hint_map)
+    crossword, across_map, down_map = generate_cross(words, 20, 50, 50)
+    export_cross(crossword)
+    export_json(hint_map, across_map, down_map)
+
+
+def export_json(hint_map, across_map, down_map):
+    larger_map = {}
+    across_vals = []
+    for key in across_map.keys():
+        name, x, y = across_map[key]
+        value = {
+            "id": key,
+            "name": name,
+            "hint": hint_map[name],
+            "x": x,
+            "y": y
+        }
+        across_vals.append(value)
+    down_vals = []
+    for key in down_map.keys():
+        name, x, y = across_map[key]
+        value = {
+            "id": key,
+            "name": name,
+            "hint": hint_map[name],
+            "x": x,
+            "y": y
+        }
+        down_vals.append(value)
+    larger_map["across"] = across_vals
+    larger_map["down"] = down_vals
+    json_object = json.dumps(larger_map)
+    print(json_object)
+
+def parse_map(m):
+    words = []
+    for key in m.keys():
+        words.append(key)
+    return words
+
+gpt_call("fruit")
