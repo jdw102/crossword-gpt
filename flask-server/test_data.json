@@ -1,62 +1,77 @@
 {
-    "across": [
-      {
-        "hint": "Sweet, juicy fruit with a tough outer skin and a large pit in the center",
-        "id": 1,
-        "name": "MANGO",
-        "x": 25,
-        "y": 25
-      },
-      {
-        "hint": "Small, sweet fruit that grows on a bush with thorns",
-        "id": 2,
-        "name": "RASPBERRY",
-        "x": 23,
-        "y": 23
-      },
-      {
-        "hint": "Large, brown fruit with a hard shell containing white flesh and water",
-        "id": 3,
-        "name": "COCONUT",
-        "x": 19,
-        "y": 28
-      },
-      {
-        "hint": "Small, sweet fruit with seeds on the surface and a green stem",
-        "id": 4,
-        "name": "STRAWBERRY",
-        "x": 22,
-        "y": 21
-      },
-      {
-        "hint": "Soft, orange fruit with black seeds in the center",
-        "id": 5,
-        "name": "PAPAYA",
-        "x": 20,
-        "y": 17
-      }
-    ],
-    "down": [
-      {
-        "hint": "Sweet, juicy fruit with a thin skin and soft flesh",
-        "id": 1,
-        "name": "PEAR",
-        "x": 26,
-        "y": 23
-      },
-      {
-        "hint": "Juicy, red fruit with green skin and black seeds in the center",
-        "id": 2,
-        "name": "WATERMELON",
-        "x": 23,
-        "y": 19
-      },
-      {
-        "hint": "Sweet, yellow fruit that grows in bunches",
-        "id": 3,
-        "name": "BANANA",
-        "x": 25,
-        "y": 16
-      }
-    ]
-  }
+  "across": [
+    {
+      "hint": "A fruit that is known for containing a lot of Vitamin C; named after its color.",
+      "id": 1,
+      "name": "ORANGE",
+      "x": 8,
+      "y": 13
+    },
+    {
+      "hint": "A fruit that monkeys love to eat, known for its curved shape.",
+      "id": 2,
+      "name": "BANANA",
+      "x": 9,
+      "y": 10
+    },
+    {
+      "hint": "A fuzzy fruit that is often described as sweet and juicy.",
+      "id": 3,
+      "name": "PEACH",
+      "x": 7,
+      "y": 8
+    },
+    {
+      "hint": "A large citrus fruit that can be bitter or sweet.",
+      "id": 4,
+      "name": "GRAPEFRUIT",
+      "x": 0,
+      "y": 6
+    },
+    {
+      "hint": "This fuzzy fruit has more Vitamin C than an orange.",
+      "id": 5,
+      "name": "KIWI",
+      "x": 0,
+      "y": 1
+    },
+    {
+      "hint": "An oddly shaped fruit that is sweet and juicy.",
+      "id": 6,
+      "name": "PEAR",
+      "x": 3,
+      "y": 0
+    }
+  ],
+  "board": " , , ,P3,E,A4,R, , , , , , , , \nK5,I,W,I, ,P, , , , , , , , , \n , , ,N, ,P, , , , , , , , , \n , , ,E, ,L, , , , , , , , , \n , , ,A, ,E, , , , , , , , , \n , , ,P, , , , , ,S1, , , , , \nG4,R,A,P,E,F,R,U,I,T, , , , , \n , , ,L, , , , , ,R, , , , , \n , , ,E, , , ,P3,E,A,C,H, , , \n , , , , , , , , ,W, , , , , \n , , , , , , , , ,B2,A,N,A,N,A\n , , , , , , , , ,E, , , ,C2, \n , , , , , , , , ,R, , , ,H, \n , , , , , , , ,O1,R,A,N,G,E, \n , , , , , , , , ,Y, , , ,R, \n , , , , , , , , , , , , ,R, \n , , , , , , , , , , , , ,Y, ",
+  "down": [
+    {
+      "hint": "A small, sweet fruit that is often used in desserts.",
+      "id": 1,
+      "name": "STRAWBERRY",
+      "x": 9,
+      "y": 5
+    },
+    {
+      "hint": "A small, round fruit that comes in sweet and sour varieties.",
+      "id": 2,
+      "name": "CHERRY",
+      "x": 13,
+      "y": 11
+    },
+    {
+      "hint": "A tropical fruit that is prickly on the outside, sweet on the inside.",
+      "id": 3,
+      "name": "PINEAPPLE",
+      "x": 3,
+      "y": 0
+    },
+    {
+      "hint": "A fruit that comes in a variety of colors and types, Granny Smith, Gala and more.",
+      "id": 4,
+      "name": "APPLE",
+      "x": 5,
+      "y": 0
+    }
+  ]
+}

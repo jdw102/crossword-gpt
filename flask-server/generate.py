@@ -21,7 +21,7 @@ def generate_cross(words, max_words, x_size, y_size):
     down_map = {}
     crossword = [[' ' for _ in range(x_size)] for _ in range(y_size)]
     crossword = place(word, crossword, int(x_size / 2), int(y_size / 2), Dir.HORIZONTAL)
-    across_map[1] = (word, int(x_size / 2), int(y_size / 2))
+    across_map[1] = [word, int(x_size / 2), int(y_size / 2)]
     while count < max_words and len(words) > 0:
         word = words.pop()
         placements = []
@@ -45,10 +45,10 @@ def generate_cross(words, max_words, x_size, y_size):
             count = count + 1
             if best_placement is not None:
                 if best_placement[2] == Dir.HORIZONTAL:
-                    across_map[across_index] = (word, best_placement[0], best_placement[1])
+                    across_map[across_index] = [word, best_placement[0], best_placement[1]]
                     across_index += 1
                 else:
-                    down_map[down_index] = (word, best_placement[0], best_placement[1])
+                    down_map[down_index] = [word, best_placement[0], best_placement[1]]
                     down_index += 1
     add_numbers(crossword, across_map, down_map)
     return crossword, across_map, down_map
@@ -137,7 +137,7 @@ def place(word, crossword, x, y, direction):
     return board
 
 
-def minimize_crossword_area(puzzle):
+def minimize_crossword_area(puzzle, across_map, down_map):
     min_row, max_row = len(puzzle), 0
     min_col, max_col = len(puzzle[0]), 0
 
@@ -152,16 +152,20 @@ def minimize_crossword_area(puzzle):
     reduced_puzzle = []
     for row in range(min_row, max_row + 1):
         reduced_puzzle.append(puzzle[row][min_col:max_col + 1])
+    for key in across_map.keys():
+        across_map[key][1] -= min_col
+        across_map[key][2] -= min_row
+    for key in down_map.keys():
+        down_map[key][1] -= min_col
+        down_map[key][2] -= min_row
     return reduced_puzzle
 
 
-def export_cross(crossword):
-    finished = minimize_crossword_area(crossword)
-    with open('crossword.csv', 'w', newline='') as f:
-        writer = csv.writer(f)
-        for line in finished:
-            writer.writerow(line)
-
+def create_board_string(crossword):
+    temp = []
+    for line in crossword:
+        temp.append(','.join(line))
+    return '\n'.join(temp)
 
 openai.api_key = "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"
 messages = [
@@ -185,11 +189,11 @@ def gpt_call(theme):
         hint_map[pair['word']] = pair['hint']
     words = parse_map(hint_map)
     crossword, across_map, down_map = generate_cross(words, 20, 50, 50)
-    export_cross(crossword)
-    return export_json(hint_map, across_map, down_map)
+    minimized = minimize_crossword_area(crossword, across_map, down_map)
+    return export_json(hint_map, across_map, down_map, create_board_string(minimized))
 
 
-def export_json(hint_map, across_map, down_map):
+def export_json(hint_map, across_map, down_map, board):
     larger_map = {}
     across_vals = []
     for key in across_map.keys():
@@ -215,7 +219,7 @@ def export_json(hint_map, across_map, down_map):
         down_vals.append(value)
     larger_map["across"] = across_vals
     larger_map["down"] = down_vals
-    json_object = json.dumps(larger_map)
+    larger_map["board"] = board
     return larger_map
 
 def parse_map(m):
