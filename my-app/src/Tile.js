@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
-import {useState, useEffect } from 'react';
-import {Grid, Card, Paper, Button, TextField, Box} from '@mui/material';
+import React from 'react';
+import {useState } from 'react';
+import {Grid, TextField, Box} from '@mui/material';
 import './App.css';
 
 function isLetter(str) {
@@ -106,7 +106,7 @@ const Tile = ({letter, setSelectedCoordinate, x, y, setCounter,
     //   }, [text]);
       
     return (
-        <Grid item xs = {1} >
+        <Grid item xs = {1} s>
             <Box  display="flex" justifyContent="center" alignItems="center" position='relative'>
                 <TextField 
                 disabled={letter === ' '}
@@ -120,7 +120,7 @@ const Tile = ({letter, setSelectedCoordinate, x, y, setCounter,
                 onKeyDown = {e => changeLetter(e.key)} 
                 sx={{ input: { cursor: 'pointer'}}} 
                 inputProps = 
-                {{maxLength: 1, style: {textAlign: 'center', fontSize: '3vmin', padding: '20%', fontWeight: '700'}, cursor: 'pointer'}} />
+                {{maxLength: 1, style: {textAlign: 'center', fontSize: '2vmin', padding: '20%', fontWeight: '700'}, cursor: 'pointer'}} />
                 <div style={{position: 'absolute', top: 0, left: 3, fontSize: '2vmin'}}>
                     {letter[1]}
                 </div>

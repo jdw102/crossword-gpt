@@ -1,10 +1,9 @@
-import logo from './logo.svg';
 import React from 'react';
 import './App.css';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import axios from 'axios';
-import {Button, TextField, Grid, List, Card,
-  ListItem, ListItemIcon, ListItemText, CircularProgress, Box, CardContent, IconButton, Tooltip, Grow, Slide, } from '@mui/material';
+import {Button, Grid, List,
+  ListItem, ListItemIcon, ListItemText, CircularProgress, Box, IconButton, Tooltip, Grow } from '@mui/material';
 import Board from './Board.js';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -34,7 +33,7 @@ function App() {
       board.push(chars);
       let blanks = []
       chars.forEach((c) => {
-          if (c != ' '){
+          if (c !== ' '){
               count++;
           }
           blanks.push(' ');

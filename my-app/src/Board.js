@@ -18,11 +18,11 @@ const Board = ({setSelectedWord, board, coordinateMap, tiles, count}) => {
     const [booleanBoard, setBooleanBoard] = useState(initialGrid)
 
     useEffect(() => {
-        if (count == counter) {
+        if (count === counter) {
             setOpen(true);
             setCounter(0);
         }
-      }, [counter]);
+      }, [counter, count]);
 
     const handleClose = () => {
         setOpen(false);
@@ -42,7 +42,7 @@ const Board = ({setSelectedWord, board, coordinateMap, tiles, count}) => {
             })
             setBooleanBoard(newBoard)
         }
-    }, [direction, selectedCoordinate])
+    }, [direction, selectedCoordinate, coordinateMap, initialGrid, setSelectedWord])
 
     let i = -1;
     return (
