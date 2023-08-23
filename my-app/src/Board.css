@@ -1,0 +1,30 @@
+
+.tile {
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .selected-tile {
+    background-color: lightblue;
+  }
+  
+  
+  .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-width: 0.1rem;
+    border-color: gray;
+    border-radius: 0;
+  }
+  
+  .MuiOutlinedInput-root.Mui-focused {
+    background-color: rgba(255, 255, 0, 0.815);
+  }
+  
+  .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline  {
+    background-color: #191b1d;
+    border-radius: 0;
+    border: 0.1rem gray solid;
+    pointer-events: none;
+  }
+  
+  .empty-tile {
+    pointer-events: none;
+  }

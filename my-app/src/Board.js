@@ -1,64 +1,76 @@
 import React from 'react';
 import {useState, useEffect } from 'react';
 import {Grid, Box, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button} from '@mui/material';
-import './App.css';
+import './Board.css';
 import Tile from "./Tile.js";
 
 
 
-const Board = ({data}) => {
-    const board = [];
-    let count = 0;
-    const lines = data.board.split('\n');
-    lines.forEach((line) => {
-        let chars = line.split(',');
-        board.push(chars);
-        chars.forEach((c) => {
-            if (c != ' '){
-                count++;
-            }
-        })
-    })
+
+const Board = ({setSelectedWord, board, coordinateMap, tiles, count}) => {
+    const initialGrid = Array.from({ length: board.length }, () =>
+    Array.from({ length: board[0].length }, () => false)
+    );
+    const [direction, setDirection] = useState("across");
+    const [selectedCoordinate, setSelectedCoordinate] = useState({x: 0, y: 0});   
     const [open, setOpen] = useState(false);
-    const [counter, setCounter] = useState(-1);
+    const [counter, setCounter] = useState(0);
+    const [booleanBoard, setBooleanBoard] = useState(initialGrid)
 
     useEffect(() => {
         if (count == counter) {
             setOpen(true);
-            counter = 0;
+            setCounter(0);
         }
-        console.log(counter);
       }, [counter]);
 
     const handleClose = () => {
         setOpen(false);
     };
-
-    const tileHandleChar = (c, target, found, setFound) => {
-        if (c === target && !found){
-            console.log('test');
-            setCounter(counter + 1);
-            setFound(true);
+    useEffect(() => {
+        let words = coordinateMap.get(selectedCoordinate.x + "x" + selectedCoordinate.y);
+        let word = null;
+        if (words) {
+            word = words.find((w) => w.direction === direction);
+            setSelectedWord(word);
         }
-        else if (c !== target && found) {
-            setCounter(counter - 1);
-            setFound(false);
+        if (word) {
+            let newCoordinates = word.coordinates;
+            let newBoard = [...initialGrid];
+            newCoordinates.forEach((c) => {
+                newBoard[c.y][c.x] = true;
+            })
+            setBooleanBoard(newBoard)
         }
-    }
+    }, [direction, selectedCoordinate])
 
+    let i = -1;
     return (
-        <Box component = {Card} raised display="flex" justifyContent="center" alignItems="center" style = {{backgroundColor: "#84c3eb20", margin: "20px", borderRadius: "20px"}}>
-            <Grid container columns = {board[0].length}  style = {{width: "90%", marginTop: "40px", marginBottom: "40px"}}>
-                {board.map((line) => {
+        <Box component = {Card} raised display="flex" justifyContent="center" alignItems="center" style = {{ border: '0.5rem solid #191b1d', borderRadius: "0"}}>
+            {board.length > 0 && 
+            <Grid container columns = {board[0].length}  style = {{width: "100%"}}>
+                {tiles.map((row) => {
+                    i++;
+                    let j = -1;
                     return (
-                        line.map((char) => {
+                        row.map((props, key) => {
+                            j++;
                             return (
-                                <Tile letter = {char} callback = {tileHandleChar}/>
+                                <Tile 
+                                key={key}
+                                {...props}
+                                setCounter={setCounter}
+                                direction={booleanBoard[i][j]? direction: "across"}
+                                setDirection={setDirection}
+                                setSelectedCoordinate={setSelectedCoordinate}
+                                selected={booleanBoard[i][j]}
+                                />
                             )
                         })
                     )
                 })}
             </Grid>
+            }
             <Dialog
             open={open}
             onClose={handleClose}
@@ -81,4 +93,4 @@ const Board = ({data}) => {
     )
 }
 
-export default Board;
+export default React.memo(Board);

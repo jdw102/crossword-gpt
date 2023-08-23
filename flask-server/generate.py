@@ -1,10 +1,11 @@
 import random
 from enum import Enum
-import csv
 import openai
 import json
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
-openai.api_key = "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"
 
 class Dir(Enum):
     HORIZONTAL = 1
@@ -167,12 +168,11 @@ def create_board_string(crossword):
         temp.append(','.join(line))
     return '\n'.join(temp)
 
-openai.api_key = "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"
+openai.api_key = os.getenv("KEY")
 messages = [
     {"role": "system", "content": "You are an assistant."}
 ]
-prompt = "Generate in JSON format a list of 10 words to be used in a crossword puzzle and a hint to go along with each of them. Do not generate any other text beside the JSON including your initial response such as when you say \"Sure!\". Do not say anything except generate the JSON! Make sure there are enough letters in common between some of the words and that they are in all caps. Make sure the JSON is formatted as {\"words\": [{\"word\": ___, \"hint\":___}]}. The words should abide by the following theme: "
-
+prompt = os.getenv("BASE_PROMPT")
 
 def gpt_call(theme):
     messages.append(
@@ -183,6 +183,7 @@ def gpt_call(theme):
     )
     reply = chat.choices[0].message.content
     messages.append({"role": "assistant", "content": reply})
+    print(reply)
     data = json.loads(reply)
     hint_map = {}
     for pair in data["words"]:

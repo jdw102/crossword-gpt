@@ -29,7 +29,21 @@
 }
 
 .header {
-  font-family: 'Merriweather', Georgia, 'Times New Roman', Times, serif;
+  font-family: 'Georgia';
+}
+
+.title-tile {
+  width: 3vw;
+  border-color: black; 
+  font-size: 3vw;
+  background-color: white;
+  border-width: 0.25rem; 
+  color: black;
+  text-align: center;
+}
+
+.title-tile::placeholder{
+  color: black
 }
 
 .body {
@@ -45,9 +59,9 @@
   }
 }
 
-.empty-square{
-  display: inline-block;
-  height: 30px;
-  width: 30px;
-  background-color: #555;  
+.theme-input {
+    height: 7vmin;
+    width: 100%;
+    font-size: 1.5vmax;
+    font-family: 'Georgia';
 }
